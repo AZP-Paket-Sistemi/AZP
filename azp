@@ -1,9 +1,16 @@
 #!/usr/bin/bash
 
+# AZP Paket Sistemi 1.0
+# 2021 AZP
+# 2019-2021 PacPERRO OS
+
+# Root kontrol
 if [[ ! $UID -eq 0 ]] ; then
     echo -e "\033[31;1m Xahiş edirik root ilə açın ! \033[:0m"
+    echo -e "\033[31;1m Please open with root! \033[:0m"
     exit 1
 fi
+
 
 echo """
 
@@ -11,10 +18,9 @@ echo """
 
  PacPERRO OS üçün hazırlanmış paket sistemi
 
-  -i = Paketinizi quraşdırmaq üçün istifadə olunur
-  -r = Quraşdırılmış paketi silmək üçün istifadə olunur
-  -a = Hər hansı program haqqında məlumat almaq üçündür
-   (Paket quraşdırarkən paketin uzantısını yazmağınıza ehtiyac yoxdur, script özü tanıyır)
+  azp -i package = Paket quraşdırma (install package)
+  azp -r application = Paketi silmək (remove application)
+  azp -a application = Program haqqında məlumat (application about)
 
    AZP Rəsmi Saytı: https://azp-paket-sistemi.github.io
    Web Saytımız: https://pacperro-os.github.io
@@ -23,80 +29,113 @@ echo """
           2021 AZP
 """
 mkdir -p /var/cache/azp
-read -p "Əmr seçin: " secim
 
-if [ $secim == "-i" ]
+# Paket quraşdırma
+if [ $1 == "-i" ]
 then
-   read -p "Paket Adı: " paket_adi
-   echo -e "\033[1;34m Fayllar Kopyalanır... \033[:0m"
-   mkdir azptmp
-   if ! unzip $paket_adi.azp -d azptmp;
-   then
-     echo -e "\033[1;31m Paket Tapılmadı ! \033[:0m"
-     exit
-   else
-     echo -e "\033[1;34m Paket Çıxarılır... \033[:0m"
-   fi
-   cd azptmp
-   i_program=`cat program-adı`
-   mkdir -p /var/cache/azp/$i_program
-   cp -r info /var/cache/azp/$i_program
-   cp -r program-adı /var/cache/azp/$i_program
-   cp -r fayllar /var/cache/azp/$i_program
-   echo '#!/usr/bin/bash' >> /var/cache/azp/$i_program/azprm
-   echo 'fayllar=`cat fayllar`' >> /var/cache/azp/$i_program/azprm
-   echo 'rm -r ${fayllar[*]}' >> /var/cache/azp/$i_program/azprm
-   echo 'i_program=`cat program-adı`' >> /var/cache/azp/$i_program/azprm
-   echo 'rm -r /var/cache/azp/$i_program' >> /var/cache/azp/$i_program/azprm
-   chmod u+x /var/cache/azp/$i_program/azprm
-   if ! tar -xf src.tar.bz2 -C /;
-   then
-     echo -e "\033[1;31m 'src' faylı tapılmadı \033[:0m"
-     exit
-   else
-     echo -e "\033[1;34m Fayllar fayl sisteminə kopyalanır... \033[:0m"
-   fi
-   if [ -f bağımlılıqlar ]
-   then 
-      echo -e "\033[5;34m Bağımlılıq faylı tapıldı. Quraşdırılacaqdır \033[:0m"
-      depends=`cat bağımlılıqlar`
-      apt-get install $depends -y
-   fi
-   sleep 1
-   cd ..
-   rm -r azptmp
-   echo -e "\033[1;32m Quraşdırma bitmişdir \033[0m"
+  paket_adi=$2
+  mkdir /tmp/azptmp
+  if ! unzip $paket_adi.azp -d /tmp/azptmp;
+  then
+    echo -e "\033[1;31m Paket Tapılmadı ! \033[:0m"
+    exit
+  else
+    echo -e "\033[1;34m Fayllar Çıxarılır... \033[:0m"
+  fi
+  cd /tmp/azptmp
+  # Fayllar yoxlama
+  if [ -f fayllar ]
+  then
+    echo ""
+  else
+    echo "'fayllar' tapılmadı, paket keçərsizdir"
+    rm -r /tmp/azptmp
+    exit
+  fi
+  if [ -f info ]
+  then
+    echo ""
+  else
+    echo "'info' tapılmadı, paket keçərsizdir"
+    rm -r /tmp/azptmp
+    exit
+    
+  fi
+  if [ -f program-adı ]
+  then
+    echo ""
+  else
+    echo "'program-adı' tapılmadı, paket keçərsizdir"
+    rm -r /tmp/azptmp
+    exit
+  fi
+  if [ -f src.tar.bz2 ]
+  then
+    echo ""
+  else
+    echo "'src.tar.bz2' tapılmadı, paket keçərsizdir"
+    rm -r /tmp/azptmp
+    exit
+  fi
+  i_program=`cat program-adı`
+  mkdir -p /var/cache/azp/$i_program
+  cp -r info /var/cache/azp/$i_program
+  cp -r program-adı /var/cache/azp/$i_program
+  cp -r fayllar /var/cache/azp/$i_program
+  echo '#!/usr/bin/bash' >> /var/cache/azp/$i_program/azprm
+  echo 'fayllar=`cat fayllar`' >> /var/cache/azp/$i_program/azprm
+  echo 'rm -r ${fayllar[*]}' >> /var/cache/azp/$i_program/azprm
+  echo 'i_program=`cat program-adı`' >> /var/cache/azp/$i_program/azprm
+  echo 'rm -r /var/cache/azp/$i_program' >> /var/cache/azp/$i_program/azprm
+  chmod u+x /var/cache/azp/$i_program/azprm
+  mkdir azpsrc
+  if ! tar -xf src.tar.bz2 -C azpsrc;
+  then
+    echo -e "\033[1;31m 'src' faylında problem baş verdi ! \033[:0m"
+    exit
+    rm -r /tmp/azptmp
+  else
+    echo -e "\033[1;34m Fayllar fayl sisteminə kopyalanır... \033[:0m"
+  fi
+  sleep 1
+  cd azpsrc
+  cp -prf * /
+  cd ..
+  cd ..
+  rm -r azptmp
+  echo -e "\033[1;32m Quraşdırma bitmişdir \033[0m"
 fi
 
-if [ $secim == "-r" ]
+# Program Silmə
+if [ $1 == "-r" ]
 then
-   read -p "Program Adı: " r_program
-   read -p "Programı silmək istədiyinizdən əminsiniz ? [h/y]: " program_r_secim
-   if [ $program_r_secim == "h" ]
-   then
-     cd /var/cache/azp/$r_program
-     chmod +x /var/cache/azp/$r_program/azprm
-     if ! /var/cache/azp/$r_program/azprm;
-     then
-       echo -e "\033[1;31m Belə bir program yoxdur \033[:0m"
-       exit
-     else
-       echo ""
-     fi
-     sleep 1
-     echo -e "\e[1;32m Proses Bitdi \033[:0m"
-     cd ..
-   fi
-
-   if [ $program_r_secim == "y" ]
-   then
+  r_program=$2
+  read -p "Programı silmək istədiyinizdən əminsiniz ? [h/y]: " program_r_secim
+  if [ $program_r_secim == "h" ]
+  then
+    cd /var/cache/azp/$r_program
+    chmod +x /var/cache/azp/$r_program/azprm
+    if ! /var/cache/azp/$r_program/azprm > /dev/null;
+    then
+      echo -e "\033[1;31m Xəta baş verdi ! \033[:0m"
       exit
-   fi
+    else
+      echo ""
+    fi
+    sleep 1
+    echo -e "\e[1;32m Proses Bitdi \033[:0m"
+    cd ..
+  fi
+  if [ $program_r_secim == "y" ]
+  then
+     exit
+  fi
 fi
 
-if [ $secim == "-a" ]
+# Program Haqqında Məlumat
+if [ $1 == "-a" ]
 then
-   read -p "Program Adı: " program_info
+   program_info=$2
    echo "-------------------"
    if ! cat /var/cache/azp/$program_info/info;
    then
