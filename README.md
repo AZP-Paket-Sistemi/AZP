@@ -1,7 +1,8 @@
 # AZP
 AZP Paket Sistemi
 
-Öncəliklə, scripti yükləyib daha sonra /usr/bin qovluğuna atın
+Ən son versiyanı yükləməyiniz tövsiyə olunur :)
+
 Çalışdırmaq üçün:
 `sudo su`
 `azp`
