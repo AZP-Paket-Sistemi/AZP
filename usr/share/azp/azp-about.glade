@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkAboutDialog" id="pəncərə">
+    <property name="can-focus">False</property>
+    <property name="icon">../../../../../../../usr/share/pixmaps/azp-200x200.png</property>
+    <property name="type-hint">dialog</property>
+    <property name="program-name">AZP</property>
+    <property name="version">2.5</property>
+    <property name="comments" translatable="yes">Azerbaijan's local Linux package system</property>
+    <property name="website">https://azp-paket-sistemi.github.io</property>
+    <property name="website-label" translatable="yes">AZP Offical Site</property>
+    <property name="authors">PacPERRO OS</property>
+    <property name="translator-credits" translatable="yes">Heydər İsmayıllı
+Hasan Yıldız</property>
+    <property name="logo">../../../../../../../usr/share/pixmaps/azp-200x200.png</property>
+    <property name="license-type">gpl-3-0</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

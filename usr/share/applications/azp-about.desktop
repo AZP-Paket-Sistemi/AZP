@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=AZP About
+Name[az]=AZP Haqqında
+Name[tr]=AZP Hakkında
+Comment=AZP Package System About
+Comment[az]=AZP Paket Sistemi Haqqında
+Comment[tr]=AZP Paket Sistemi Hakkında
+Exec=azp-about.py
+Icon=/usr/share/pixmaps/azp-200x200.png
+Categories=System;FileTools;GTK;
+StartupNotify=true
