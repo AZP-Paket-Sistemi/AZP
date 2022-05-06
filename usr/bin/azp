@@ -365,7 +365,6 @@ then
       echo "$error" $"There is no such program !"
       exit
     fi
-    chattr -i /var/cache/azp/$r_program
     /var/cache/azp/$r_program/azprm &>/dev/null
     sleep 1
     echo "$finished" $"Process Finished"
