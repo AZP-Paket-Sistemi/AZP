@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-### AZP Paket Sistemi 2.5
+### AZP Paket Sistemi 2.5-2
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
