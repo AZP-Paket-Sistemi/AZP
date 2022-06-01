@@ -441,11 +441,6 @@ then
     echo "$remove" $"Old data remove..."
     rm -r /tmp/azp-depoins &>/dev/null
   fi
-  if ! ping -q -c 1 -W 1 8.8.8.8 &>/dev/null;
-  then
-    echo "$error" $"Check your internet connection and try again"
-    exit
-  fi
   mkdir -p /tmp/azp-depoins
   cd /tmp/azp-depoins &>/dev/null
   depo_app=$2
@@ -634,11 +629,6 @@ fi
 # Depodaki seçdiyiniz kategoriyada programları görmək
 if [[ $1 == "-dpl" ]]
 then
-  if ! ping -q -c 1 -W 1 8.8.8.8 &>/dev/null;
-  then
-    echo "$error" $"Check your internet connection and try again"
-    exit
-  fi
   read -p $"Category [a,b,c]: " depo_pl
   if ! wget $azp_pack_depo/$depo_pl/program-list &>/dev/null;
   then
@@ -679,7 +669,6 @@ then
     exit
   fi
   azp -i $azp_upgrade
-  chmod u+x /usr/bin/azp &>/dev/null
   rm -r /tmp/azp-upgrade &>/dev/null
   echo "$finished" $"AZP updated"
 fi
