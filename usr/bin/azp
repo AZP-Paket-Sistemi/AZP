@@ -42,10 +42,9 @@ done
 [[ ! -d /etc/azp ]] && mkdir -p /etc/azp/
 [[ ! -d /etc/azp/azp-depo ]] && mkdir -p /etc/azp/azp-depo
  # -- AZP Rəsmi sayt link --
- cd /var/cache/azp
  rm -r /var/cache/azp/azp-depo &>/dev/null
  wget https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo &>/dev/null
- cd ..
+ mv azp-depo /var/cache/azp/azp-depo
  azp_offical_depo=$(cat /var/cache/azp/azp-depo)
 if ! [ -f /etc/azp/azp-depo/depo ]
 then
@@ -533,12 +532,6 @@ then
   chattr -R -i /var/cache/azp/applications/
   i_program=$(cat app-name)
   info=$(sed -n 1p info)
-  if ! [ -f files ]
-  then
-    echo "$error" $"'fayllar' not found, package invalid"
-    rm -r /tmp/azptmp &>/dev/null
-    exit
-  fi
   if ! [ -f info ]
   then
     echo "$error" $"'info' not found, package invalid"
