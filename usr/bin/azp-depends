@@ -1,0 +1,179 @@
+#!/bin/bash
+
+### AZP Paket Sistemi 3.0
+# AZP Offical Site: https://azp-paket-sistemi.github.io
+# AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
+
+# 2021-2022 AZP
+# 2019-2022 PacPERRO OS
+
+TEXTDOMAINDIR=/usr/share/locale
+TEXTDOMAIN=azp-depends
+
+# Bəzi teglər :)
+error=$(echo -e "\033[1;31m E: \033[:0m")
+process=$(echo -e "\033[1;34m P: \033[:0m")
+finished=$(echo -e "\033[1;32m F: \033[:0m")
+remove=$(echo -e "\033[1;31m R: \033[:0m")
+info=$(echo -e "\033[1;37m I: \033[:0m")
+warning=$(echo -e "\033[1;33m V: \033[:0m")
+
+azp_pack_depo=$(cat /etc/azp/azp-depo/depo)
+if [ $1 == "depends" ]
+then
+  [[ -d /tmp/azp-depends ]] && rm -r /tmp/azp-depends
+  mkdir -p /tmp/azp-depends/azptmp
+  cd /tmp/azp-depends
+    for depends in $(cat /tmp/azptmp/depends);
+    do
+      wget $azp_pack_depo/${depends:0:1}/${depends}/latest-file &>/dev/null
+      pack=$(cat latest-file)
+      echo "$process" "$pack --" $"Download depends..."
+      wget $azp_pack_depo/${depends:0:1}/${depends}/$pack &>/dev/null
+      if [ ! -f $pack ]
+      then
+        echo "$error" $"Package Not Found !"
+        exit
+      fi
+      if ! unzip $pack -d /tmp/azp-depends/azptmp &>/dev/null;
+      then
+        echo "$error" $"The package could not be broken !"
+        exit
+      else
+        echo "$process" $"Files Extract..."
+      fi
+      cd /tmp/azp-depends/azptmp
+      i_program=$(cat app-name)
+      info=$(sed -n 1p info)
+      chattr -R -i /var/cache/azp/applications/
+      # Programın quraşdırılmış olub olmamasını yoxlama
+      if [ -d /var/cache/azp/applications/$i_program ]
+      then
+        echo "$warning" $"This program is already installed, will be replaced with a new one ..."
+        fayllar=$(cat /var/cache/azp/applications/$i_program/files)
+        rm -rf $fayllar
+        rm_program=$(cat /var/cache/azp/applications/$i_program/app-name)
+        rm -rf /var/cache/azp/applications/$rm_program
+      fi
+      mkdir -p /var/cache/azp/applications/$i_program
+      if [ ! -f info ]
+      then
+        echo "$error" $"'info' not found, package invalid"
+        rm -r /tmp/azptmp &>/dev/null
+        exit
+      fi
+      [[ ! -s info ]] && echo "$error" $"the 'info' file is not written!" && exit
+        # 'info' faylına yazılanları yoxlama
+        line_name=$(sed -n 1p info)
+        if [[ ${line_name:0:5} != "name:" ]]
+        then
+          echo "$error" $"'name:' not spelled correctly in 'info' file!"
+          exit
+        fi
+        line_description=$(sed -n 2p info)
+        if [[ ${line_description:0:12} != "description:" ]]
+        then
+          echo "$error" $"'description:' not spelled correctly in 'info' file!"
+          exit
+        fi
+        if [[ ${line_description:14} == "*" ]]
+        then
+           line_description_ct=$(sed -n 5p info)
+           if [[ ${line_description_ct:0:12} != "descritpion:" ]]
+           then
+             echo "$error" $"'description:' not spelled correctly in 'info' file! !"
+             exit
+           fi
+        fi
+        line_version=$(sed -n 3p info)
+        if [[ ${line_version:0:8} != "version:" ]]
+        then
+          echo "$error" $"'version:' not spelled correctly in 'info' file!"
+          exit
+        fi
+        line_version=$(sed -n 4p info)
+        if [[ ${line_version:0:11} != "maintainer:" ]]
+        then
+          echo "$error" $"'maintainer:' not spelled correctly in 'info' file!"
+          exit
+        fi
+        if [ ${info:6} != ${i_program} ]
+        then
+          echo "$error" $"The program names in the 'files' and 'app-name' files do not match!"
+          exit
+        fi
+      if ! [ -f app-name ]
+      then
+        echo "$error" $"'app-name' not found, package invalid"
+        rm -r /tmp/azptmp &>/dev/null
+        exit
+      fi
+      if ! [ -s app-name ]
+      then
+        echo "$error" $"the 'app-name' file is not written!"
+        exit
+      fi
+      if ! [ -f src.tar.bz2 ]
+      then
+        echo "$error" $"'src.tar.bz2' not found, package invalid"
+        rm -r /tmp/azptmp &>/dev/null
+        exit
+      fi
+      # Paket bağımlılıqları quraşdırma
+      if [ -f depends ]
+      then
+        i_dep=$(cat depends);
+        azp-depends depends
+        cp -r depends /var/cache/azp/applications/$i_program
+      fi
+      cp -a info /var/cache/azp/applications/$i_program
+      cp -a app-name /var/cache/azp/applications/$i_program
+      mkdir azpsrc
+      if ! tar -xf src.tar.bz2 -C azpsrc;
+      then
+        echo "$error" $"There was a problem with the 'src' file !"
+        rm -r /tmp/azptmp &>/dev/null
+        exit
+      fi
+      sleep 1
+      echo "$(tar -tf src.tar.bz2)" >> azpsrc/srcfilelist
+      cd azpsrc
+      # Düzgün kopyalama prosesi
+      echo "$process" $"Create files list..."
+      for list in $(cat srcfilelist);
+      do
+        if [ -f ${list} ]
+        then
+          echo "/${list}" >> /var/cache/azp/applications/$i_program/files
+          echo "${list}" >> copyfilelist
+        else
+          echo "${list}" >> folderslist
+        fi
+      done
+      echo "$process" $"Create folders list..."
+      touch /tmp/azptmp/notfolders
+       for folders in $(cat folderslist);
+       do
+         if [ ! -s /${folders} ]
+         then
+           echo "${folders}" >> /tmp/azptmp/notfolders
+         fi
+       done
+       for notfolders in $(cat /tmp/azptmp/notfolders);
+       do
+         mkdir -p /${notfolders}
+         echo "/${notfolders}" >> /var/cache/azp/applications/$i_program/files
+       done
+      echo "$process" $"Files copied to file system..."
+       for cplist in $(cat copyfilelist);
+       do
+         cp -a ${cplist} /${cplist}
+       done
+      cd ..
+      cd ..
+      rm -r /tmp/azp-depends/azptmp
+      rm -r /tmp/azp-depends/latest-file
+      echo "$finished" $"Installation is complete for depends"
+    done
+  rm -r /tmp/azp-depends
+fi

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-### AZP Paket Sistemi 2.5-2
+### AZP Paket Sistemi 3.0
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
-# 2022 AZP
+# 2021-2022 AZP
 # 2019-2022 PacPERRO OS
 
 import gi

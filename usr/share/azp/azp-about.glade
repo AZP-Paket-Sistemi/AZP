@@ -7,12 +7,12 @@
     <property name="icon">../../../../../../../usr/share/pixmaps/azp-200x200.png</property>
     <property name="type-hint">dialog</property>
     <property name="program-name">AZP</property>
-    <property name="version">2.5-2</property>
+    <property name="version">3.0</property>
     <property name="comments" translatable="yes">Azerbaijan's local Linux package system</property>
     <property name="website">https://azp-paket-sistemi.github.io</property>
     <property name="website-label" translatable="yes">AZP Offical Site</property>
     <property name="authors">PacPERRO OS</property>
-    <property name="translator-credits" translatable="yes">Heydər İsmayıllı
+    <property name="translator-credits" translatable="yes">Heydər İsmayıllı &lt;heyderismayilli092@gmail.com&gt;
 Hasan Yıldız</property>
     <property name="logo">../../../../../../../usr/share/pixmaps/azp-200x200.png</property>
     <property name="license-type">gpl-3-0</property>
@@ -37,6 +37,9 @@ Hasan Yıldız</property>
             <property name="fill">False</property>
             <property name="position">0</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
