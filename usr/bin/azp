@@ -42,9 +42,11 @@ done
 [[ ! -d /etc/azp ]] && mkdir -p /etc/azp/
 [[ ! -d /etc/azp/azp-depo ]] && mkdir -p /etc/azp/azp-depo
  # -- AZP Rəsmi sayt link --
+ [[ ! -d /var/cache/azp ]] && mkdir -p /var/cache/azp
  rm -r /var/cache/azp/azp-depo &>/dev/null
- wget https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo &>/dev/null
- mv azp-depo /var/cache/azp/azp-depo
+ wget https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo
+ cp azp-depo /var/cache/azp/azp-depo &>/dev/null
+ rm -r azp-depo &>/dev/null
  azp_offical_depo=$(cat /var/cache/azp/azp-depo)
 if ! [ -f /etc/azp/azp-depo/depo ]
 then
@@ -184,7 +186,6 @@ then
   \033[:0m"""
 fi
 
-mkdir -p /var/cache/azp &>/dev/null
 mkdir -p /etc/azp/azp-depo &>/dev/null
 mkdir -p /var/cache/azp-archives &>/dev/null
 
@@ -654,7 +655,6 @@ then
       echo "${folders}" >> /tmp/azptmp/notfolders
     fi
   done
-  cp /tmp/azptmp/notfolders /home/pacperro/
   for notfolders in $(cat /tmp/azptmp/notfolders);
   do
     mkdir -p /${notfolders}
