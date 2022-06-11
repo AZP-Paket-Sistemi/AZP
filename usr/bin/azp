@@ -44,7 +44,7 @@ done
  # -- AZP Rəsmi sayt link --
  [[ ! -d /var/cache/azp ]] && mkdir -p /var/cache/azp
  rm -r /var/cache/azp/azp-depo &>/dev/null
- wget https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo
+ wget https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo &>/dev/null
  cp azp-depo /var/cache/azp/azp-depo &>/dev/null
  rm -r azp-depo &>/dev/null
  azp_offical_depo=$(cat /var/cache/azp/azp-depo)
