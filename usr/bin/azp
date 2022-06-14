@@ -222,7 +222,6 @@ then
   cd /tmp/azptmp
   i_program=$(cat app-name)
   info=$(sed -n 1p info)
-  chattr -R -i /var/cache/azp/applications
   # Programın quraşdırılmış olub olmamasını yoxlama
   if [ -d /var/cache/azp/applications/$i_program ]
   then
@@ -346,7 +345,6 @@ then
   do
     cp -a ${cplist} /${cplist}
   done
-  chattr -R +i /var/cache/azp/applications
   cd ..
   rm -r /tmp/azptmp
   echo "$finished" $"Installation is complete"
@@ -530,7 +528,6 @@ then
   cp -r $latest_file /var/cache/azp-archives
   echo "$latest_file -- $(date "+DATE: %D   TIME: %T")" >> /var/cache/azp-archives/archives
   cd /tmp/azptmp
-  chattr -R -i /var/cache/azp/applications/
   i_program=$(cat app-name)
   info=$(sed -n 1p info)
   if ! [ -f info ]
@@ -665,7 +662,6 @@ then
   do
     cp -prf ${cplist} /${cplist}
   done
-  chattr -R +i /var/cache/azp/applications/
   cd ..
   rm -r /tmp/azptmp
   echo "$finished" $"Process Finished"
