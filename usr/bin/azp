@@ -41,10 +41,11 @@ done
 # Depo Əlavə Etmə
 [[ ! -d /etc/azp ]] && mkdir -p /etc/azp/
 [[ ! -d /etc/azp/azp-depo ]] && mkdir -p /etc/azp/azp-depo
+[[ ! -d /var/cache/azp ]] && mkdir -p /var/cache/azp
  # -- AZP Rəsmi sayt link --
- [[ ! -d /var/cache/azp ]] && mkdir -p /var/cache/azp
  rm -r /var/cache/azp/azp-depo &>/dev/null
  wget https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo &>/dev/null
+ [[ ! -f azp-depo ]] && echo "https://azp-paket-sistemi.github.io/azp-depo" >> /var/cache/azp/azp-depo
  cp azp-depo /var/cache/azp/azp-depo &>/dev/null
  rm -r azp-depo &>/dev/null
  azp_offical_depo=$(cat /var/cache/azp/azp-depo)
@@ -364,7 +365,6 @@ then
   fi
   [[ ! -d /var/cache/azp/applications/$2 ]] && echo "$error" $"Application not found !" && exit
   read -p $"Remove application ? [h/y]: " program_r_secim
-  chattr -R -i /var/cache/azp/applications
   if [ ${program_r_secim:0:3} == "lib" ]
   then
     read -p "Can be library is a system library. Are you sure the library delete ? [h/y]:" lib_r_secim
@@ -402,7 +402,6 @@ then
     echo "$finished" $"Process Finished"
     cd ..
   fi
-  chattr -R +i /var/cache/azp/applications
   [[ $program_r_secim == "y" ]] && echo "$finished" $"Exit" && exit
 fi
 
