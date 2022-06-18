@@ -719,16 +719,25 @@ then
   fi
   mkdir /tmp/azp-upgrade
   cd /tmp/azp-upgrade
-  wget $azp_pack_depo/a/azp/latest-file &>/dev/null
-  azp_upgrade=$(cat latest-file)
-  echo "$process" $"AZP latest version download..."
-  if ! wget $azp_pack_depo/a/azp/$azp_upgrade &>/dev/null;
+  wget $azp_pack_depo/azp-version &>/dev/null
+  azp_upgrade=$(cat azp-version)
+  if ! wget https://github.com/AZP-Paket-Sistemi/AZP/releases/download/azp-$azp_upgrade/azp-$azp_upgrade.zip &>/dev/null
   then
     echo "$error" $"Could not connect to depo"
     exit
   fi
-  azp -i $azp_upgrade
-  rm -r /tmp/azp-upgrade &>/dev/null
+  unzip azp-$azp_upgrade.zip &>/dev/null
+  azp_version=$(cat /etc/azp-version)
+  azp_l_version=$(cat etc/azp-version)
+  if [ $azp_version == $azp_l_version ]
+  then
+    echo "$info" "AZP latest version installed == ($azp_version)"
+    rm -r /tmp/azp-upgrade
+    exit
+  fi
+  ./azp-install.sh
+  cd ..
+  rm -r /tmp/azp-upgrade
   echo "$finished" $"AZP updated"
 fi
 
