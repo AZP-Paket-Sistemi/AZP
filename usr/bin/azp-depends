@@ -28,7 +28,10 @@ then
     do
      if ! [ -d /var/cache/azp/applications/${depends} ]
      then
-      wget $azp_pack_depo/${depends:0:1}/${depends}/latest-file &>/dev/null
+      if ! wget $azp_pack_depo/${depends:0:1}/${depends}/latest-file &>/dev/null;
+      then
+        echo "$error" "${depends}" $" == depends not found !"
+      fi
       pack=$(cat latest-file)
       echo "$process" "$pack --" $"Download depends..."
       wget $azp_pack_depo/${depends:0:1}/${depends}/$pack &>/dev/null
@@ -47,7 +50,6 @@ then
       cd /tmp/azp-depends/azptmp
       i_program=$(cat app-name)
       info=$(sed -n 1p info)
-      chattr -R -i /var/cache/azp/applications/
       mkdir -p /var/cache/azp/applications/$i_program
       if [ ! -f info ]
       then

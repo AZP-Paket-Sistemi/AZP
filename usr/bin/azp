@@ -232,11 +232,13 @@ then
     rm_program=$(cat /var/cache/azp/applications/$i_program/app-name)
     rm -rf /var/cache/azp/applications/$rm_program
   fi
-  mkdir -p /var/cache/azp/applications/$i_program
+  # Quraşdırılacaq programın qovluğu
+  mkdir -p /var/cache/azp/applications/$i_program &>/dev/null
   if [ ! -f info ]
   then
     echo "$error" $"'info' not found, package invalid"
     rm -r /tmp/azptmp &>/dev/null
+    rm -r /var/cache/azp/applications/$i_program
     exit
   fi
   [[ ! -s info ]] && echo "$error" $"the 'info' file is not written!" && exit
@@ -245,12 +247,14 @@ then
     if [[ ${line_name:0:5} != "name:" ]]
     then
       echo "$error" $"'name:' not spelled correctly in 'info' file!"
+      rm -r /var/cache/azp/applications/$i_program
       exit
     fi
     line_description=$(sed -n 2p info)
     if [[ ${line_description:0:12} != "description:" ]]
     then
       echo "$error" $"'description:' not spelled correctly in 'info' file!"
+      rm -r /var/cache/azp/applications/$i_program
       exit
     fi
     if [[ ${line_description:14} == "*" ]]
@@ -259,6 +263,7 @@ then
        if [[ ${line_description_ct:0:12} != "descritpion:" ]]
        then
          echo "$error" $"'description:' not spelled correctly in 'info' file! !"
+         rm -r /var/cache/azp/applications/$i_program
          exit
        fi
     fi
@@ -266,34 +271,40 @@ then
     if [[ ${line_version:0:8} != "version:" ]]
     then
       echo "$error" $"'version:' not spelled correctly in 'info' file!"
+      rm -r /var/cache/azp/applications/$i_program
       exit
     fi
     line_version=$(sed -n 4p info)
     if [[ ${line_version:0:11} != "maintainer:" ]]
     then
       echo "$error" $"'maintainer:' not spelled correctly in 'info' file!"
+      rm -r /var/cache/azp/applications/$i_program
       exit
     fi
     if [ ${info:6} != ${i_program} ]
     then
       echo "$error" $"The program names in the 'files' and 'app-name' files do not match!"
+      rm -r /var/cache/azp/applications/$i_program
       exit
     fi
   if ! [ -f app-name ]
   then
     echo "$error" $"'app-name' not found, package invalid"
     rm -r /tmp/azptmp &>/dev/null
+    rm -r /var/cache/azp/applications/$i_program
     exit
   fi
   if ! [ -s app-name ]
   then
     echo "$error" $"the 'app-name' file is not written!"
+    rm -r /var/cache/azp/applications/$i_program
     exit
   fi
   if ! [ -f src.tar.bz2 ]
   then
     echo "$error" $"'src.tar.bz2' not found, package invalid"
     rm -r /tmp/azptmp &>/dev/null
+    rm -r /var/cache/azp/applications/$i_program
     exit
   fi
   # Paket bağımlılıqları quraşdırma
