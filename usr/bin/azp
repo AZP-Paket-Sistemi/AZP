@@ -166,7 +166,7 @@ then
 
                 
                 | 3.0 |  
-                -------
+               ---------
   """
 
   echo -e """
@@ -311,7 +311,7 @@ then
   if [ -f depends ]
   then
     i_dep=$(cat depends);
-    azp-depends depends
+    azp-depends depends /tmp/azptmp/depends
     cp -r depends /var/cache/azp/applications/$i_program
   fi
   cp -a info /var/cache/azp/applications/$i_program
@@ -622,7 +622,7 @@ then
   if [ -f depends ]
   then
     i_dep=$(cat depends);
-    azp-depends depends
+    azp-depends depends /tmp/azptmp/depends
     cp -r depends /var/cache/azp/applications/$i_program
   fi
   if [ ! -s /var/cache/azp/applications/$i_program ]

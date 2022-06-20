@@ -24,13 +24,14 @@ then
   [[ -d /tmp/azp-depends ]] && rm -r /tmp/azp-depends
   mkdir -p /tmp/azp-depends/azptmp
   cd /tmp/azp-depends
-    for depends in $(cat /tmp/azptmp/depends);
+    for depends in $(cat $2);
     do
      if ! [ -d /var/cache/azp/applications/${depends} ]
      then
       if ! wget $azp_pack_depo/${depends:0:1}/${depends}/latest-file &>/dev/null;
       then
         echo "$error" "${depends}" $" == depends not found !"
+        exit
       fi
       pack=$(cat latest-file)
       echo "$process" "$pack --" $"Download depends..."
@@ -117,9 +118,7 @@ then
       # Paket bağımlılıqları quraşdırma
       if [ -f depends ]
       then
-        i_dep=$(cat depends);
-        azp-depends depends
-        cp -r depends /var/cache/azp/applications/$i_program
+        echo "$(cat depends)" >> /tmp/azp-depends-list
       fi
       cp -a info /var/cache/azp/applications/$i_program
       cp -a app-name /var/cache/azp/applications/$i_program
@@ -175,4 +174,12 @@ then
      fi
     done
   rm -r /tmp/azp-depends
+fi
+if [ -f /tmp/azp-depends-list ]
+then
+  for adl in $(cat /tmp/azp-depends-list);
+  do
+    rm -r /tmp/azp-depends-list
+    azp-depends depends ${adl}
+  done
 fi
