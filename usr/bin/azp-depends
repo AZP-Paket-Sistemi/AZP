@@ -1,11 +1,11 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 3.0
+### AZP Paket Sistemi 3.0-1
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
-# 2021-2022 AZP
-# 2019-2022 PacPERRO OS
+# © 2021-2022 AZP
+# © 2019-2022 PacPERRO OS
 
 TEXTDOMAINDIR=/usr/share/locale
 TEXTDOMAIN=azp-depends
@@ -22,12 +22,13 @@ azp_pack_depo=$(cat /etc/azp/azp-depo/depo)
 if [ $1 == "depends" ]
 then
   [[ -d /tmp/azp-depends ]] && rm -r /tmp/azp-depends
-  mkdir -p /tmp/azp-depends/azptmp
-  cd /tmp/azp-depends
-    for depends in $(cat $2);
+  [[ ! -d /tmp/azp-depends ]] && mkdir -p /tmp/azp-depends
+    for depends in $2;
     do
+     cd /tmp/azp-depends
      if ! [ -d /var/cache/azp/applications/${depends} ]
      then
+      [[ ! -d /tmp/azp-depends/${depends}/azptmp ]] && mkdir -p /tmp/azp-depends/${depends}/azptmp
       if ! wget $azp_pack_depo/${depends:0:1}/${depends}/latest-file &>/dev/null;
       then
         echo "$error" "${depends}" $" == depends not found !"
@@ -41,21 +42,21 @@ then
         echo "$error" $"Package Not Found !"
         exit
       fi
-      if ! unzip $pack -d /tmp/azp-depends/azptmp &>/dev/null;
+      if ! unzip $pack -d /tmp/azp-depends/${depends}/azptmp &>/dev/null;
       then
         echo "$error" $"The package could not be broken !"
         exit
       else
         echo "$process" $"Files Extract..."
       fi
-      cd /tmp/azp-depends/azptmp
+      cd /tmp/azp-depends/${depends}/azptmp
       i_program=$(cat app-name)
       info=$(sed -n 1p info)
       mkdir -p /var/cache/azp/applications/$i_program
       if [ ! -f info ]
       then
         echo "$error" $"'info' not found, package invalid"
-        rm -r /tmp/azptmp &>/dev/null
+        rm -r /tmp/azp-depends/${depends}/azptmp &>/dev/null
         exit
       fi
       [[ ! -s info ]] && echo "$error" $"the 'info' file is not written!" && exit
@@ -101,7 +102,7 @@ then
       if ! [ -f app-name ]
       then
         echo "$error" $"'app-name' not found, package invalid"
-        rm -r /tmp/azptmp &>/dev/null
+        rm -r /tmp/azp-depends/${depends}/azptmp &>/dev/null
         exit
       fi
       if ! [ -s app-name ]
@@ -112,7 +113,7 @@ then
       if ! [ -f src.tar.bz2 ]
       then
         echo "$error" $"'src.tar.bz2' not found, package invalid"
-        rm -r /tmp/azptmp &>/dev/null
+        rm -r /tmp/azp-depends/${depends}/azptmp &>/dev/null
         exit
       fi
       # Paket bağımlılıqları quraşdırma
@@ -126,7 +127,7 @@ then
       if ! tar -xf src.tar.bz2 -C azpsrc;
       then
         echo "$error" $"There was a problem with the 'src' file !"
-        rm -r /tmp/azptmp &>/dev/null
+        rm -r /tmp/azp-depends/${depends}/azptmp &>/dev/null
         exit
       fi
       sleep 1
@@ -145,15 +146,15 @@ then
         fi
       done
       echo "$process" $"Create folders list..."
-      touch /tmp/azptmp/notfolders
+      touch /tmp/azp-depends/${depends}/azptmp/notfolders
        for folders in $(cat folderslist);
        do
          if [ ! -s /${folders} ]
          then
-           echo "${folders}" >> /tmp/azptmp/notfolders
+           echo "${folders}" >> /tmp/azp-depends/${depends}/azptmp/notfolders
          fi
        done
-       for notfolders in $(cat /tmp/azptmp/notfolders);
+       for notfolders in $(cat /tmp/azp-depends/${depends}/azptmp/notfolders);
        do
          mkdir -p /${notfolders}
          echo "/${notfolders}" >> /var/cache/azp/applications/$i_program/files
@@ -165,7 +166,7 @@ then
        done
       cd ..
       cd ..
-      rm -r /tmp/azp-depends/azptmp
+      rm -r /tmp/azp-depends/${depends}
       rm -r /tmp/azp-depends/latest-file
       echo "$finished" $"Installation is complete for depends"
      else
@@ -173,13 +174,13 @@ then
       echo "$warning" "${depends} -- " $"Depends installed" "(${info_version:8})"
      fi
     done
-  rm -r /tmp/azp-depends
 fi
 if [ -f /tmp/azp-depends-list ]
 then
   for adl in $(cat /tmp/azp-depends-list);
   do
-    rm -r /tmp/azp-depends-list
+    rm -r /tmp/azp-depends-list &>/dev/null
     azp-depends depends ${adl}
   done
 fi
+rm -r /tmp/azp-depends

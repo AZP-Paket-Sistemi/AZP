@@ -1,11 +1,11 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 3.0
+### AZP Paket Sistemi 3.0-1
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
-# 2021-2022 AZP
-# 2019-2022 PacPERRO OS
+# © 2021-2022 AZP
+# © 2019-2022 PacPERRO OS
 
 # Tərcümə faylı
 TEXTDOMAINDIR=/usr/share/locale
@@ -165,8 +165,8 @@ then
    ---------------------------------
 
                 
-                | 3.0 |  
-               ---------
+                | 3.0-1 |  
+                ---------
   """
 
   echo -e """
@@ -192,7 +192,7 @@ mkdir -p /var/cache/azp-archives &>/dev/null
 
 if ! [ -f /etc/azp-version ]
 then
-  echo "3.0" >> /etc/azp-version
+  echo "3.0-1" >> /etc/azp-version
 fi
 
 
@@ -310,8 +310,10 @@ then
   # Paket bağımlılıqları quraşdırma
   if [ -f depends ]
   then
-    i_dep=$(cat depends);
-    azp-depends depends /tmp/azptmp/depends
+    for i_dep in $(cat /tmp/azptmp/depends);
+    do
+      azp-depends depends ${i_dep}
+    done
     cp -r depends /var/cache/azp/applications/$i_program
   fi
   cp -a info /var/cache/azp/applications/$i_program
@@ -621,8 +623,10 @@ then
   # Paket bağımlılıqları quraşdırma
   if [ -f depends ]
   then
-    i_dep=$(cat depends);
-    azp-depends depends /tmp/azptmp/depends
+    for i_dep in $(cat /tmp/azptmp/depends);
+    do
+      azp-depends depends ${i_dep}
+    done
     cp -r depends /var/cache/azp/applications/$i_program
   fi
   if [ ! -s /var/cache/azp/applications/$i_program ]

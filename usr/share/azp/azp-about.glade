@@ -7,7 +7,7 @@
     <property name="icon">../../../../../../../usr/share/pixmaps/azp-200x200.png</property>
     <property name="type-hint">dialog</property>
     <property name="program-name">AZP</property>
-    <property name="version">3.0</property>
+    <property name="version">3.0-1</property>
     <property name="comments" translatable="yes">Azerbaijan's local Linux package system</property>
     <property name="website">https://azp-paket-sistemi.github.io</property>
     <property name="website-label" translatable="yes">AZP Offical Site</property>
