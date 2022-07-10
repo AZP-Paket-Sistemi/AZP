@@ -9,6 +9,7 @@ AZP Paket Sistemi
 
 
 AZP Seçənəkləri:
+
  `azp -i package.azp`  = Paket quraşdırma
  
  `azp -r application`  = Quraşdırılmış paketi qaldırma
