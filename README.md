@@ -6,6 +6,8 @@ AZP Paket Sistemi
 Çalışdırmaq üçün:
 `sudo azp`
 
+
+
 AZP Seçənəkləri:
  `azp -i package.azp`  = Paket quraşdırma
  
