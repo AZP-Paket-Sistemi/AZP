@@ -1,17 +1,17 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 3.0-1
+### AZP Paket Sistemi 3.5
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
 # © 2021-2022 AZP
-# © 2019-2022 PacPERRO OS
+# © 2019-2022 PacPERRO
 
 # Tərcümə faylı
 TEXTDOMAINDIR=/usr/share/locale
 TEXTDOMAIN=azp
 
-# Bəzi teglər :)
+# Rənglər
 error=$(echo -e "\033[1;31m E: \033[:0m")
 process=$(echo -e "\033[1;34m P: \033[:0m")
 finished=$(echo -e "\033[1;32m F: \033[:0m")
@@ -27,13 +27,16 @@ then
 fi
 
 # Bağımlılıqları yoxlama
-depends=("zip" "unzip" "wget" "tar" "ping")
+depends="zip unzip wget tar"
 for i in ${depends}; do
   if ! command -v "${i}" &>/dev/null; then
     echo "$error" "${i}" $" -- not installed !"
     exit
   fi
 done
+
+# Prosessor arxitekturası
+arch=$(uname -m)
 
 # Köhnə data yoxlama
 [[ -d /tmp/azptmp ]] && echo "$remove" $"Old data remove..." && rm -r /tmp/azptmp
@@ -44,13 +47,10 @@ done
 [[ ! -d /var/cache/azp ]] && mkdir -p /var/cache/azp
  # -- AZP Rəsmi sayt link --
  rm -r /var/cache/azp/azp-depo &>/dev/null
- wget https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo &>/dev/null
- [[ ! -f azp-depo ]] && echo "https://azp-paket-sistemi.github.io/azp-depo" >> /var/cache/azp/azp-depo
- cp azp-depo /var/cache/azp/azp-depo &>/dev/null
- rm -r azp-depo &>/dev/null
- azp_offical_depo=$(cat /var/cache/azp/azp-depo)
-if ! [ -f /etc/azp/azp-depo/depo ]
+ wget -O /var/cache/azp/azp-depo https://raw.githubusercontent.com/AZP-Paket-Sistemi/AZP/main/azp-depo &>/dev/null
+if ! [ -f /etc/azp/azp-depo/depo ] && [ -f /var/cache/azp/azp-depo ]
 then
+  azp_offical_depo=$(cat /var/cache/azp/azp-depo)
   echo "$process" $"A repository is not set. Must be added. (To add a standard azp repository: -azpd)"
   sleep 1
   read -p $"Add Repo: " add_depo
@@ -74,8 +74,7 @@ then
          echo -e "\033[1;35m AZP Repo: $dlink \033[:0m"
          echo -e "\033[1;32m depo == /etc/azp/azp-depo \033[:0m"
          echo -e "\033[1;32m info-depo == /etc/azp/azp-depo \033[:0m"
-         cp -p * /etc/azp/azp-depo/
-         cd ..
+         cp -p info-depo depo /etc/azp/azp-depo/
          cd ..
          rm -r /tmp/azp_depo_add
          exit
@@ -123,7 +122,7 @@ then
   echo -e "\033[1;37m $dabout \033[:0m"
   echo -e "\033[1;32m depo == /etc/azp/azp-depo \033[:0m"
   echo -e "\033[1;32m info-depo == /etc/azp/azp-depo \033[:0m"
-  cp -p * /etc/azp/azp-depo/
+  cp -p info-depo depo /etc/azp/azp-depo/
   cd ..
   cd ..
   rm -r /tmp/azp_depo_add
@@ -140,7 +139,7 @@ then
     echo -e "\033[1;35m AZP Repo: $dlink \033[:0m"
     echo -e "\033[1;32m depo == /etc/azp/azp-depo \033[:0m"
     echo -e "\033[1;32m info-depo == /etc/azp/azp-depo \033[:0m"
-    cp -p * /etc/azp/azp-depo/
+    cp -p info-depo depo /etc/azp/azp-depo/
     cd ..
     cd ..
     rm -r /tmp/azp_depo_add
@@ -165,23 +164,23 @@ then
    ---------------------------------
 
                 
-                | 3.0-1 |  
-                ---------
+               || 3.5 || 
+                -------
   """
 
   echo -e """
 
-   PacPERRO OS tərəfindən hazırlanmış paket sistemi
-   (Package system developed by PacPERRO OS)
+   Azərbaycanın yerli Linux paket meneceri
+   (Azerbaijan local Linux package manager)
 
    Yardım: azp -h
    Help: azp -h
 
    AZP Offical Site: https://azp-paket-sistemi.github.io
    AZP Depo: https://azp-paket-sistemi.github.io/azp-depo
-   PacPERRO OS: https://pacperro-os.github.io
+   PacPERRO: https://pacperro-os.github.io
 
-          © 2019-2022 PacPERRO OS
+          © 2019-2022 PacPERRO
           © 2021-2022 AZP
 
   \033[:0m"""
@@ -192,10 +191,8 @@ mkdir -p /var/cache/azp-archives &>/dev/null
 
 if ! [ -f /etc/azp-version ]
 then
-  echo "3.0-1" >> /etc/azp-version
+  echo "3.5" >> /etc/azp-version
 fi
-
-
 
 
 # Paket quraşdırma
@@ -223,16 +220,15 @@ then
   cd /tmp/azptmp
   i_program=$(cat app-name)
   info=$(sed -n 1p info)
-  # Programın quraşdırılmış olub olmamasını yoxlama
+  # Proqramın quraşdırılmış olub olmamasını yoxlama
   if [ -d /var/cache/azp/applications/$i_program ]
   then
-    echo "$warning" $"This program is already installed, will be replaced with a new one ..."
-    fayllar=$(cat /var/cache/azp/applications/$i_program/files)
-    rm -rf $fayllar
-    rm_program=$(cat /var/cache/azp/applications/$i_program/app-name)
-    rm -rf /var/cache/azp/applications/$rm_program
+    program_version=$(sed -n 3p info)
+    echo "$warning" "$i_program" $"== Installed program (${program_version:9})"
+    rm -r /tmp/azptmp
+    exit
   fi
-  # Quraşdırılacaq programın qovluğu
+  # Quraşdırılacaq proqramın qovluğu
   mkdir -p /var/cache/azp/applications/$i_program &>/dev/null
   if [ ! -f info ]
   then
@@ -242,6 +238,17 @@ then
     exit
   fi
   [[ ! -s info ]] && echo "$error" $"the 'info' file is not written!" && exit
+  # arch kontrol
+  line_arch=$(sed -n 5p info)
+  if [[ ${line_arch:0:13} == "architecture:" ]]
+  then
+    if [[ ${line_arch:14} != ${arch} ]] && [[ ${line_arch:14} != "amd64" ]]
+    then
+      echo "$error" $"Software arch is incompatible with processor arch"
+      echo $"Processor Arch: " "${arch}"
+      echo $"Program Arch: " "${line_arch:6}"
+    fi
+  fi
    # 'info' faylına yazılanları yoxlama
     line_name=$(sed -n 1p info)
     if [[ ${line_name:0:5} != "name:" ]]
@@ -340,6 +347,7 @@ then
       echo "${list}" >> folderslist
     fi
   done
+  [[ ! -f copyfilelist ]] && touch copyfilelist
   echo "$process" $"Create folders list..."
   touch /tmp/azptmp/notfolders
   for folders in $(cat folderslist);
@@ -359,26 +367,36 @@ then
   do
     cp -a ${cplist} /${cplist}
   done
-  cd ..
+  [[ ! -f /var/cache/azp/applications/$i_program/files ]] && touch /var/cache/azp/applications/$i_program/files
+  # Proqram məlumtlarını nüxsələmə
+  cd /var/cache/azp/applications/$i_program/
+  for prgafiles in "app-name info files depends";
+  do
+    tar -zcvf azp-reinfo-$i_program.tar.gz ${prgafiles} &>/dev/null
+  done
+  cp -a azp-reinfo-$i_program.tar.gz /var/backups/
+  rm -r azp-reinfo-$i_program.tar.gz
   rm -r /tmp/azptmp
   echo "$finished" $"Installation is complete"
+  notify-send "AZP" "$paket_adi" $"== installed" &>/dev/null
 fi
 
 
 
 
-# Program Silmə
+# Proqram Silmə
 if [[ $1 == "-r" ]]
 then
   r_program=$2
-  if ! [[ "$2" != "" ]]
+  if ! [[ "$r_program" != "" ]]
   then
     echo "$error" $"The program was not selected !"
     exit 1
   fi
   [[ ! -d /var/cache/azp/applications/$2 ]] && echo "$error" $"Application not found !" && exit
   read -p $"Remove application ? [h/y]: " program_r_secim
-  if [ ${program_r_secim:0:3} == "lib" ]
+  [[ $program_r_secim == "y" ]] && echo "$finished" $"Exit" && exit
+  if [ ${r_program:0:3} == "lib" ]
   then
     read -p "Can be library is a system library. Are you sure the library delete ? [h/y]:" lib_r_secim
     [[ $lib_r_secim == "y" ]] && exit
@@ -391,10 +409,7 @@ then
       depends=("$(cat /var/cache/azp/applications/$r_program/depends)")
       for d in ${depends};
       do
-        d_fayllar=$(cat /var/cache/azp/applications/${d}/files)
-        rm -rf $d_fayllar
-        rm_d=$(cat /var/cache/azp/applications/${d}/app-name)
-        rm -rf /var/cache/azp/applications/$rm_d
+        azp-depends dependsr ${d}
       done
     fi
     [[ $depends_r_secim == "y" ]] && echo "$process" $"Next process..."
@@ -415,17 +430,16 @@ then
     echo "$finished" $"Process Finished"
     cd ..
   fi
-  [[ $program_r_secim == "y" ]] && echo "$finished" $"Exit" && exit
 fi
 
 
 
 
-# Program Haqqında Məlumat
+# Proqram Haqqında Məlumat
 if [[ $1 == "-a" ]]
 then
   program_info=$2
-  if ! [[ "$2" != "" ]]
+  if ! [[ "$program_info" != "" ]]
   then
     echo "$error" $"The program was not selected !"
     exit
@@ -441,11 +455,18 @@ then
     echo "$error" $"'info' file not found !"
     exit
   fi
+  for d in $(grep -n "description:" /var/cache/azp/applications/$program_info/info);
+  do
+    if [[ ${d:0:1} -gt 2 ]]
+    then
+       ldesct=$(sed -n ${d:0:1},1000p /var/cache/azp/applications/$program_info/info)
+     fi
+  done
   name=$(sed -n 1p /var/cache/azp/applications/$program_info/info)
   description=$(sed -n 2p /var/cache/azp/applications/$program_info/info)
   version=$(sed -n 3p /var/cache/azp/applications/$program_info/info)
   maintainer=$(sed -n 4p /var/cache/azp/applications/$program_info/info)
-  description1=$(sed -n 5,1000p /var/cache/azp/applications/$program_info/info)
+  description1=$ldesct
   description_out=$([[ ${description:13} != "*" ]] && echo "${description:13}" || echo "${description1:14}")
   echo -e "\033[1;32m name: \033[:0m" "\033[1;37m${name:6}\033[:0m"
   echo -e "\033[1;32m description: \033[:0m" "\033[1;37m$description_out\033[:0m"
@@ -456,10 +477,13 @@ fi
 
 
 
-# Quraşdırılan programlar listəsi
+# Quraşdırılan proqramlar listəsi
 if [[ $1 == "-pl" ]]
 then
-  cd /var/cache/azp/applications/ &>/dev/null
+  if ! cd /var/cache/azp/applications/ &>/dev/null;
+  then
+    echo "$error" "/var/cache/azp/applications/" $"== folder not found !"
+  fi
   echo "$(ls)" >> /var/cache/azp/apps-list
   echo $"Apps:"
   for apps_list in $(cat /var/cache/azp/apps-list);
@@ -497,15 +521,26 @@ then
   repo_ad=$depo_app
   if ! wget $azp_pack_depo/${repo_ad:0:1}/$repo_ad/latest-file &>/dev/null;
   then
-    echo -e "$error" "'$depo_app'" $" not found !"
+    echo -e "$error" $"Depo not connect !"
     rm -r /tmp/azp-depoins &>/dev/null
     exit
   fi
   echo "$process" $"The repo file is read ..."
-  latest_file=$(cat latest-file) &>/dev/null
+  latestf=$(cat latest-file) &>/dev/null
+  # Proqram arxitekturası yoxlama
+  if [ -z $latestf ]
+  then
+    if ! wget $azp_pack_depo/${repo_ad:0:1}/$repo_ad/latest-file_$arch &>/dev/null;
+    then
+      echo -e "$error" $"Depo not connect !"
+      rm -r /tmp/azp-depoins &>/dev/null
+      exit
+    fi
+  fi
+  latest_file=$([[ -z $(cat latest-file) ]] && echo "$(cat latest-file_$arch)" || echo "$(cat latest-file)")
   if [ -f /var/cache/azp-archives/$latest_file ]
   then
-    echo "$process" $"There is an $latest_file package so this package will be installed"
+    echo "$process" "$latest_file" $"There is an package so this package will be installed"
     azp -i /var/cache/azp-archives/$latest_file
     rm -r /tmp/azp-depoins &>/dev/null
     exit 1
@@ -568,12 +603,14 @@ then
     fi
     if [[ ${line_description:14} == "*" ]]
     then
-       line_description_ct=$(sed -n 5p info)
-       if [[ ${line_description_ct:0:12} != "descritpion:" ]]
-       then
-         echo "$error" $"'description:' not spelled correctly in 'info' file! !"
-         exit
-       fi
+       for ds in $(grep -n "description:" info);
+       do
+         if ! [[ ${ds:0:1} -gt 2 ]]
+         then
+            echo "$error" $"'description:' not spelled correctly in 'info' file! !"
+            exit
+         fi
+       done
     fi
     line_version=$(sed -n 3p info)
     if [ ${line_version:0:8} != "version:" ]
@@ -609,17 +646,28 @@ then
     rm -r /tmp/azptmp &>/dev/null
     exit
   fi
-  # Programın quraşdırılmış olub olmamasını yoxlama
+  # Proqramın quraşdırılmış olub olmamasını yoxlama
   if [ -d /var/cache/azp/applications/$i_program ]
   then
-    echo "$warning" $"This program is already installed, will be replaced with a new one ..."
-    fayllar=$(cat /var/cache/azp/applications/$i_program/files)
-    rm -rf $fayllar
-    rm_program=$(cat /var/cache/azp/applications/$i_program/app-name)
-    rm -rf /var/cache/azp/applications/$rm_program
+    program_version=$(sed -n 3p info)
+    echo "$warning" "$i_program" $"== Installed program (${program_version:9})"
+    rm -r /tmp/azptmp
+    rm -r /tmp/azp-depoins
+    exit
   fi
-  # Program qovluğu
+  # Quraşdırılacaq proqram qovluğu
   mkdir -p /var/cache/azp/applications/$i_program
+  # arch kontrol
+  line_arch=$(sed -n 5p info)
+  if [[ ${line_arch:0:13} == "architecture:" ]]
+  then
+    if [[ ${line_arch:14} != ${arch} ]] && [[ ${line_arch:14} != "amd64" ]]
+    then
+      echo "$error" $"Software arch is incompatible with processor arch"
+      echo $"Processor Arch: " "${arch}"
+      echo $"Program Arch: " "${line_arch:6}"
+    fi
+  fi
   # Paket bağımlılıqları quraşdırma
   if [ -f depends ]
   then
@@ -657,6 +705,7 @@ then
       echo "${list}" >> folderslist
     fi
   done
+  [[ ! -f copyfilelist ]] && touch copyfilelist
   echo "$process" $"Create folders list..."
   touch /tmp/azptmp/notfolders
   for folders in $(cat folderslist);
@@ -677,8 +726,18 @@ then
     cp -prf ${cplist} /${cplist}
   done
   cd ..
+  [[ ! -f /var/cache/azp/applications/$i_program/files ]] && touch /var/cache/azp/applications/$i_program/files
+  # Proqram məlumtlarını nüxsələmə
+  cd /var/cache/azp/applications/$i_program/
+  for prgafiles in "app-name info files depends";
+  do
+    tar -zcvf azp-reinfo-$i_program.tar.gz ${prgafiles} &>/dev/null
+  done
+  cp -a azp-reinfo-$i_program.tar.gz /var/backups/
+  rm -r azp-reinfo-$i_program.tar.gz
   rm -r /tmp/azptmp
   echo "$finished" $"Process Finished"
+  notify-send "AZP" "$i_program == installed" &>/dev/null
   cd ..
   rm -r /tmp/azp-depoins &>/dev/null
 fi
@@ -686,20 +745,19 @@ fi
 
 
 
-# Depodaki seçdiyiniz kategoriyada programları görmək
+# Depodaki seçdiyiniz kategoriyada proqramları görmək
 if [[ $1 == "-dpl" ]]
 then
   read -p $"Category [a,b,c]: " depo_pl
-  if ! wget $azp_pack_depo/$depo_pl/program-list &>/dev/null;
-  then
-    echo "$error" $"There is no such category !"
-    exit
-  fi
   if ! [ -f /var/cache/azp/depo-list ]
   then
     rm -r depo-list &>/dev/null
   fi
-  mv program-list /var/cache/azp/
+  if ! wget -O /var/cache/azp/program-list $azp_pack_depo/$depo_pl/program-list &>/dev/null;
+  then
+    echo "$error" $"There is no such category !"
+    exit
+  fi
   echo "$output" "'$depo_pl'" $" apps:"
   for depo_apps_list in $(cat /var/cache/azp/program-list);
   do
@@ -727,7 +785,7 @@ then
   azp_upgrade=$(cat azp-version)
   if ! wget https://github.com/AZP-Paket-Sistemi/AZP/releases/download/azp-$azp_upgrade/azp-$azp_upgrade.zip &>/dev/null
   then
-    echo "$error" $"Could not connect to depo"
+    echo "$error" $"Could not connect to repo"
     exit
   fi
   unzip azp-$azp_upgrade.zip &>/dev/null
@@ -735,11 +793,12 @@ then
   azp_l_version=$(cat etc/azp-version)
   if [ $azp_version == $azp_l_version ]
   then
-    echo "$info" "AZP latest version installed == ($azp_version)"
+    echo "$info" "AZP latest version installed" " == ($azp_version)"
     rm -r /tmp/azp-upgrade
     exit
   fi
-  ./azp-install.sh
+  echo "$process" $"AZP is updated to a new version" "($azp_l_version)"
+  bash azp-install.sh &>/dev/null
   cd ..
   rm -r /tmp/azp-upgrade
   echo "$finished" $"AZP updated"
@@ -762,7 +821,7 @@ then
    echo -e "\033[1;35m AZP Repo: $dlink \033[:0m"
    echo -e "\033[1;32m depo == /etc/azp/azp-depo \033[:0m"
    echo -e "\033[1;32m info-depo == /etc/azp/azp-depo \033[:0m"
-   cp -p * /etc/azp/azp-depo/
+   cp -p info info-depo /etc/azp/azp-depo/
    cd ..
    cd ..
    rm -r /tmp/azp_depo_add
@@ -774,7 +833,7 @@ fi
 # Hər hansı rəsmi olmayan AZP deposu əlavə etmə
 if [[ $1 == "-azpdo" ]]
 then
-  rm -r /etc/azp/azp-depo/depo
+    rm -r /etc/azp/azp-depo/depo
     echo "$process" $"Add unoffical other AZP repository"
     sleep 1
     read -p $"Add Repo: " add_depo
@@ -827,28 +886,10 @@ then
     echo -e "\033[1;37m $dabout \033[:0m"
     echo -e "\033[1;32m depo == /etc/azp/azp-depo \033[:0m"
     echo -e "\033[1;32m info-depo == /etc/azp/azp-depo \033[:0m"
-    cp -p * /etc/azp/azp-depo/
+    cp -p info-depo info /etc/azp/azp-depo/
     cd ..
     cd ..
     rm -r /tmp/azp_depo_add
-    if [[ $add_depo == "-azpd" ]]
-    then
-      mkdir -p /tmp/azp_depo_add
-      cd /tmp/azp_depo_add
-      wget $azp_offical_depo/[depo]/depo.zip &>/dev/null
-      mkdir depo_file
-      echo "$process" $"'depo.zip' extract..."
-      unzip depo.zip -d depo_file &>/dev/null
-      cd depo_file
-      dlink=$(cat depo)
-      echo -e "\033[1;35m AZP Repo: $dlink \033[:0m"
-      echo -e "\033[1;32m depo == /etc/azp/azp-depo \033[:0m"
-      echo -e "\033[1;32m info-depo == /etc/azp/azp-depo \033[:0m"
-      cp -p * /etc/azp/azp-depo/
-      cd ..
-      cd ..
-      rm -r /tmp/azp_depo_add
-    fi
 fi
 
 
@@ -857,17 +898,13 @@ fi
 # AZP log təmizləmə
 if [[ $1 == "-apc" ]]
 then
-  if [ ! -f /var/cache/azp-archives/*.azp ]
-  then
-    echo "$error" $"Not cleaned azp packages"
-    exit
-  fi
+  [ ! -f /var/cache/azp-archives/*.azp ] && echo "$error" $"Not cleaned azp packages" && exit
   echo -e "\033[1;34m $(cat /var/cache/azp-archives/archives) \033[:0m"
-  read -p $"Some azp packages were found. Delete packages ? [h/y]: " packages_delete
+  read -p $"Some .azp packages were found. Delete packages ? [h/y]: " packages_delete
   if [ $packages_delete == "h" ]
   then
     echo "$process" $"Deleting azp packages..."
-    rm -r /var/cache/azp-archives/*
+    rm -r /var/cache/azp-archives/* &>/dev/null
     echo "# AZP Archives" >> /var/cache/azp-archives/archives
     echo "$finished" $"Process Finished"
   fi
@@ -876,9 +913,53 @@ fi
 
 
 
+# Proqram məlumtlarını yenidən yığma
+if [[ $1 == "-reinfo" ]]
+then
+  reinfo_app=$2
+  if [[ $reinfo == "" ]]
+  then
+    echo "$error" $"Not selected application"
+    exit
+  fi
+  mkdir -p /tmp/reinfo-$reinfo_app
+  echo "$process" "$reinfo_app" $"= building info"
+  prfiles="app-name files info $([[ -f $prfiles/depends ]] && echo "$prfiles/depends")"
+  tar -xf /var/backups/azp-reinfo-$reinfo_app.tar.gz -C /tmp/reinfo-$reinfo_app
+  for prs in ${prfiles};
+  do
+    cp -prf /tmp/reinfo-$reinfo_app/${prs} /var/cache/azp/applications/$reinfo_app/${prs}
+  done
+  echo "$finished" $"Process Finished"
+fi
+
+
+# Quraşdırılan programı güncəlləmə
+if [[ $1 == "update" ]]
+then
+  update_program=$2
+  if [[ $update_program == "" ]]
+  then
+    echo "$error" $"The program was not selected !"
+    exit
+  fi
+  rm_files=$(cat /var/cache/azp/applications/$update_program/files)
+  rm -r ${rm_files} &>/dev/null
+  rm -r /var/cache/azp/applications/$update_program &>/dev/null
+  if [ -f /var/cache/azp/applications/${update_program}/depends ]
+  then
+    rm_depends=$(cat /var/cache/azp/applications/${update_program}/depends)
+    rm -r ${rm_depends} &>/dev/null
+  fi
+  echo "$process" "$update_program" $"== updating program..."
+  azp install $update_program
+fi
+
+
+
 
 # AZP Gtk About ekranı
-[[ $1 == "-azpa" ]] && azp-about.py
+[[ $1 == "-azpa" ]] && azp-about
 
 
 
@@ -886,15 +967,17 @@ fi
 # Yardım
 if [[ $1 == "-h" ]]
 then
-  echo "$info" "azp -i package.azp" $" = Install package"
-  echo "$info" "azp -r application" $" = Remove package"
-  echo "$info" "azp -a application" $" = Information about the program"
-  echo "$info" "azp -pl" $" = Creates a list of installed programs"
-  echo "$info" "azp install package" $" = Installing programs from the repository"
-  echo "$info" "azp upgrade" $" = Update AZP to the latest version"
-  echo "$info" "azp -dpl" $" = Indicates which programs are in the categories in the repository"
-  echo "$info" "azp -azpd" $" = Add offical AZP Repo"
-  echo "$info" "azp -azpdo" $" = Add unoffical other AZP Repo"
-  echo "$info" "azp -azpa" $" = AZP About"
-  echo "$info" "azp -apc" $" = AZP packages and arcives log clean"
+  echo "$info" "azp -i package.azp" $"= Install package"
+  echo "$info" "azp -r application" $"= Remove package"
+  echo "$info" "azp -a application" $"= Information about the program"
+  echo "$info" "azp -pl" $"= Creates a list of installed programs"
+  echo "$info" "azp install package" $"= Installing programs from the repository"
+  echo "$info" "azp upgrade" $"= Update AZP to the latest version"
+  echo "$info" "azp -dpl" $"= Indicates which programs are in the categories in the repository"
+  echo "$info" "azp -azpd" $"= Add offical AZP Repo"
+  echo "$info" "azp -azpdo" $"= Add unoffical other AZP Repo"
+  echo "$info" "azp -azpa" $"= AZP About"
+  echo "$info" "azp -apc" $"= AZP packages and arcives log clean"
+  echo "$info" "azp -reinfo" $"= Installed program info files rebuild"
+  echo "$info" "azp update application" $"= Update the installed application"
 fi
