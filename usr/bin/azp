@@ -332,7 +332,18 @@ then
     rm -r /tmp/azptmp &>/dev/null
     exit
   fi
-  sleep 1
+  sleep 0.5
+  # preins
+  if [ -f /tmp/azptmp/preins ]
+  then
+    echo "preins >> run"
+    bash /tmp/azptmp/preins
+  fi
+  # prerm
+  if [ -f /tmp/azptmp/prerm ]
+  then
+    cp /tmp/azptmp/prerm /var/cache/azp/applications/$i_program
+  fi
   echo "$(tar -tf src.tar.bz2)" >> azpsrc/srcfilelist
   cd azpsrc
   # Düzgün kopyalama prosesi
@@ -368,6 +379,17 @@ then
     cp -a ${cplist} /${cplist}
   done
   [[ ! -f /var/cache/azp/applications/$i_program/files ]] && touch /var/cache/azp/applications/$i_program/files
+  # postins
+  if [ -f /tmp/azptmp/postins ]
+  then
+    echo "postins >> run"
+    bash /tmp/azptmp/postins
+  fi
+  # postrm
+  if [ -f /tmp/azptmp/postrm ]
+  then
+    cp /tmp/azptmp/postrm /var/cache/azp/applications/$i_program
+  fi
   # Proqram məlumtlarını nüxsələmə
   cd /var/cache/azp/applications/$i_program/
   for prgafiles in "app-name info files depends";
@@ -422,9 +444,21 @@ then
       echo "$error" $"There is no such program !"
       exit
     fi
+    # prerm
+    if [ -f /var/cache/azp/applications/$r_program/prerm ]
+    then
+      echo "prerm >> run"
+      bash /var/cache/azp/applications/$r_program/prerm
+    fi
     fayllar=$(cat /var/cache/azp/applications/$r_program/files)
     rm -rf $fayllar
     rm_program=$(cat /var/cache/azp/applications/$r_program/app-name)
+    # postrm
+    if [ -f /var/cache/azp/applications/$r_program/postrm ]
+    then
+      echo "postrm >> run"
+      bash /var/cache/azp/applications/$r_program/postrm
+    fi
     rm -rf /var/cache/azp/applications/$rm_program
     sleep 1
     echo "$finished" $"Process Finished"
@@ -690,7 +724,18 @@ then
     rm -r /tmp/azptmp &>/dev/null
     exit
   fi
-  sleep 1
+  sleep 0.5
+  # preins
+  if [ -f /tmp/azptmp/preins ]
+  then
+    echo "preins >> run"
+    bash /tmp/azptmp/preins
+  fi
+  # prerm
+  if [ -f /tmp/azptmp/prerm ]
+  then
+    cp /tmp/azptmp/prerm /var/cache/azp/applications/$i_program
+  fi
   echo "$(tar -tf src.tar.bz2)" >> azpsrc/srcfilelist
   cd azpsrc
   # Düzgün kopyalama prosesi
@@ -727,6 +772,17 @@ then
   done
   cd ..
   [[ ! -f /var/cache/azp/applications/$i_program/files ]] && touch /var/cache/azp/applications/$i_program/files
+  # postins
+  if [ -f /tmp/azptmp/postins ]
+  then
+    echo "postins >> run"
+    bash /tmp/azptmp/postins
+  fi
+  # postrm
+  if [ -f /tmp/azptmp/postrm ]
+  then
+    cp /tmp/azptmp/postrm /var/cache/azp/applications/$i_program
+  fi
   # Proqram məlumtlarını nüxsələmə
   cd /var/cache/azp/applications/$i_program/
   for prgafiles in "app-name info files depends";

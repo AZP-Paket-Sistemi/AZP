@@ -161,7 +161,12 @@ then
         rm -r /tmp/azp-depends/${depends}/azptmp &>/dev/null
         exit
       fi
-      sleep 1
+      sleep 0.5
+      # preins
+      if [ -f /tmp/azp-depends/${depends}/azptmp/preins ]
+      then
+        bash /tmp/azp-depends/${depends}/azptmp/preins
+      fi
       echo "$(tar -tf src.tar.bz2)" >> azpsrc/srcfilelist
       cd azpsrc
       # Düzgün kopyalama prosesi
@@ -195,6 +200,11 @@ then
        do
          cp -a ${cplist} /${cplist}
        done
+      # postins
+      if [ -f /tmp/azp-depends/${depends}/azptmp/postins ]
+      then
+        bash /tmp/azp-depends/${depends}/azptmp/postins
+      fi
       cd ..
       cd ..
       rm -r /tmp/azp-depends/${depends}
@@ -220,8 +230,18 @@ if [ $1 == "dependsr" ]
 then
   rm_depends=$2
   echo "$process" "$rm_depends" $"== remove depends..."
+  # prerm
+  if [ -f /var/cache/azp/applications/$rm_depends/prerm ]
+  then
+    bash /var/cache/azp/applications/$rm_depends/prerm
+  fi
   d_fayllar=$(cat /var/cache/azp/applications/$rm_depends/files)
   rm -rf $d_fayllar &>/dev/null
   rm_d=$(cat /var/cache/azp/applications/$rm_depends/app-name)
+  # postrm
+  if [ -f /var/cache/azp/applications/$rm_depends/postrm ]
+  then
+    bash /var/cache/azp/applications/$rm_depends/postrm
+  fi
   rm -rf /var/cache/azp/applications/$rm_d &>/dev/null
 fi
