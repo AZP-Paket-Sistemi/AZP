@@ -1,37 +1,27 @@
 # AZP
-AZP Paket Sistemi
 
-Ən son versiyanı yükləməyiniz tövsiyə olunur :)
+AZP, 'Bash Script' ilə yazılmış Azərbaycanın yerli Linux paket meneceridir.
 
 Çalışdırmaq üçün:
-`sudo azp`
 
+```bash
+sudo azp
+```
 
+## AZP Əmrləri:
 
-AZP Seçənəkləri:
-
- `azp -i package.azp` = Paket quraşdırma
- 
- `azp -r application` = Quraşdırılmış paketi qaldırma
- 
- `azp -a application` = Proqram haqqında məlumat
- 
- `azp -pl` = Quraşdırılmış proqamların listəsini yaratma
- 
- `azp install package` = Depodan proqram quraşdırma
- 
- `azp upgrade` = AZP'ni son versiyaya güncəlləmə
- 
- `azp -dpl` = Depoda hansı proqramların hansı kateqoriyalarda olduğunu göstərir
- 
- `azp -azpd` = Rəsmi AZP Deposu əlavə etmə
- 
- `azp -azpdo` = Rəsmi olmayan AZP Deposu əlavə etmə
- 
- `azp -azpa` = AZP Haqqında
- 
- `azp -apc` = AZP paketlərini və arxiv datasını təmizləmə
- 
- `azp -reinfo` = Quraşdırılan proqramın info fayllarını yenidən yığır
- 
- `azp update application` = Quraşdırılan proqramı güncəlləyir
+| Əmr                        | İzah                                                              |
+| -------------------------- | ----------------------------------------------------------------- |
+| `azp -i <package.azp>`     | Paket quraşdırır                                                  |
+| `azp -r <application>`     | Quraşdırılmış paketi qaldırır                                     |
+| `azp -a <application>`     | Proqram haqqında məlumat verir                                    |
+| `azp -pl`                  | Quraşdırılmış proqramların siyahısını yaradır                     |
+| `azp install <package>`    | Depodan aket quraşdırır                                           |
+| `azp update <application>` | Quraşdırılan proqramı güncəlləyir                                 |
+| `azp upgrade`              | AZP'ni son versiyasına güncəlləyir                                |
+| `azp -dpl`                 | Depoda hansı proqramların hansı kateqoriyalarda olduğunu göstərir |
+| `azp -azpd`                | Rəsmi AZP Deposu əlavə edir                                       |
+| `azp -azpdo`               | Rəsmi olmayan AZP Deposu əlavə edir                               |
+| `azp -azpa`                | AZP haqqında məlumatı çap edir                                    |
+| `azp -apc`                 | AZP paketlərini və arxiv datasını təmizləyir                      |
+| `azp -reinfo`              | Quraşdırılan proqramın info fayllarını yenidən yığır              |
