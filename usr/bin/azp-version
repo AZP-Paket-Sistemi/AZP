@@ -1,0 +1,66 @@
+#!/bin/bash
+
+### AZP Paket Meneceri 4.0
+# AZP Offical Site: https://azp-paket-sistemi.github.io
+# AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
+
+# Tərcümə faylı
+TEXTDOMAINDIR=/usr/share/locale
+TEXTDOMAIN=azp
+
+# Rənglər
+error=$(echo -e "\033[1;31m E: \033[:0m")
+process=$(echo -e "\033[1;34m P: \033[:0m")
+finished=$(echo -e "\033[1;32m F: \033[:0m")
+remove=$(echo -e "\033[1;31m R: \033[:0m")
+info=$(echo -e "\033[1;36m I: \033[:0m")
+warning=$(echo -e "\033[1;33m V: \033[:0m")
+
+azp_pack_depo=$(cat /etc/azp/azp-depo/depo)
+azp_standart_version="4.0"
+azp_files="/usr/bin/azp
+           /usr/bin/azp-*
+           /usr/share/applications/azp-about.desktop
+           /usr/share/azp
+           /usr/share/pixmaps/azp-logo.png
+           /usr/share/locale/*/LC_MESSAGES/azp-*.mo"
+
+upgrade(){
+  if [ -d /tmp/azp-upgrade ]
+  then
+    rm -r /tmp/azp-upgrade
+  fi
+  mkdir /tmp/azp-upgrade
+  cd /tmp/azp-upgrade
+  wget $azp_pack_depo/azp-version &>/dev/null
+  azp_upgrade="$(cat azp-version)"
+  echo "$process" $"Azp old version: " "$(azp -stversion)"
+  echo "$process" $"Azp latest version: " "$azp_upgrade"
+  echo "$process" $"Azp download... "
+  if ! wget -q --show-progress https://github.com/AZP-Paket-Sistemi/AZP/releases/download/azp-$azp_upgrade/azp-$azp_upgrade.zip
+  then
+    echo "$error" $"Could not connect to repo" &>/dev/stderr
+    exit 1
+  fi
+  unzip azp-$azp_upgrade.zip &>/dev/null
+  azp_version=$(azp -stversion)
+  azp_l_version=$(cat etc/azp-version)
+  if [[ $azp_version == $azp_l_version ]]
+  then
+    echo "$info" "AZP latest version installed " " == ($azp_version)"
+    rm -r /tmp/azp-upgrade
+    exit
+  fi
+  for azpfls in ${azp_files};
+  do
+    rm -r ${azpfls}
+  done
+  bash azp-install.sh &>/dev/null
+  echo "$process" $"AZP is update to a new version... " "($azp_l_version)"
+  rm -r /tmp/azp-upgrade
+  echo "$finished" $"AZP updated"
+}
+
+stversion(){
+  echo "$azp_standart_version"
+}
