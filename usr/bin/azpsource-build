@@ -85,17 +85,17 @@ azps_build(){
   fi
   cd /tmp/azpstmp/package
   # azpbuild kontrol
-  pack_name=$(grep -n 5p azpbuild)
-  pack_release=$(grep -n 6p azpbuild)
-  pack_version=$(grep -n 7p azpbuild)
-  pack_maintainer=$(grep -n 8p azpbuild)
-  pack_url=$(grep -n 9p azpbuild)
-  pack_arch=$(grep -n 10p azpbuild)
-  pack_source=$(grep -n 11p azpbuild)
-  pack_depends=$(grep -n 12p azpbuild)
-  pack_packname=$(grep -n 13p azpbuild)
-  pack_packtype=$(grep -n 14p azpbuild)
-  pack_description=$(grep -n 15p azpbuild)
+  pack_name=$(sed -n 5p azpbuild)
+  pack_release=$(sed -n 6p azpbuild)
+  pack_version=$(sed -n 7p azpbuild)
+  pack_maintainer=$(sed -n 8p azpbuild)
+  pack_url=$(sed -n 9p azpbuild)
+  pack_arch=$(sed -n 10p azpbuild)
+  pack_source=$(sed -n 11p azpbuild)
+  pack_depends=$(sed -n 12p azpbuild)
+  pack_packname=$(sed -n 13p azpbuild)
+  pack_packtype=$(sed -n 14p azpbuild)
+  pack_description=$(sed -n 15p azpbuild)
   [ ${pack_name:4} ! "name" ] && echo "$error" $"'name' is not written in the 'azpbuild' file" && exit
   [ ${pack_release:7} ! "release" ] && echo "$error" $"'release' is not written in the 'azpbuild' file" && exit
   [ ${pack_version:7} ! "version" ] && echo "$error" $"'version' is not written in the 'azpbuild' file" && exit
@@ -336,17 +336,17 @@ azps_cazp(){
   fi
   cd /tmp/azpstmp/package
   # azpbuild kontrol
-  pack_name=$(grep -n 5p azpbuild)
-  pack_release=$(grep -n 6p azpbuild)
-  pack_version=$(grep -n 7p azpbuild)
-  pack_maintainer=$(grep -n 8p azpbuild)
-  pack_url=$(grep -n 9p azpbuild)
-  pack_arch=$(grep -n 10p azpbuild)
-  pack_source=$(grep -n 11p azpbuild)
-  pack_depends=$(grep -n 12p azpbuild)
-  pack_packname=$(grep -n 13p azpbuild)
-  pack_packtype=$(grep -n 14p azpbuild)
-  pack_description=$(grep -n 15p azpbuild)
+  pack_name=$(sed -n 5p azpbuild)
+  pack_release=$(sed -n 6p azpbuild)
+  pack_version=$(sed -n 7p azpbuild)
+  pack_maintainer=$(sed -n 8p azpbuild)
+  pack_url=$(sed -n 9p azpbuild)
+  pack_arch=$(sed -n 10p azpbuild)
+  pack_source=$(sed -n 11p azpbuild)
+  pack_depends=$(sed -n 12p azpbuild)
+  pack_packname=$(sed -n 13p azpbuild)
+  pack_packtype=$(sed -n 14p azpbuild)
+  pack_description=$(sed -n 15p azpbuild)
   [ ${pack_name:4} ! "name" ] && echo "$error" $"'name' is not written in the 'azpbuild' file" && exit
   [ ${pack_release:7} ! "release" ] && echo "$error" $"'release' is not written in the 'azpbuild' file" && exit
   [ ${pack_version:7} ! "version" ] && echo "$error" $"'version' is not written in the 'azpbuild' file" && exit
@@ -499,16 +499,16 @@ azpbs_build(){
   fi
   cd /tmp/azpbstmp
   # azpbs script kontrol
-  pack_name=$(grep -n 5p $azpbsbuild_script)
-  pack_release=$(grep -n 6p $azpbsbuild_script)
-  pack_version=$(grep -n 7p $azpbsbuild_script)
-  pack_maintainer=$(grep -n 8p $azpbsbuild_script)
-  pack_url=$(grep -n 9p $azpbsbuild_script)
-  pack_arch=$(grep -n 10p $azpbsbuild_script)
-  pack_source=$(grep -n 11p $azpbsbuild_script)
-  pack_packname=$(grep -n 12p $azpbsbuild_script)
-  pack_packtype=$(grep -n 13p $azpbsbuild_script)
-  pack_description=$(grep -n 14p $azpbsbuild_script)
+  pack_name=$(sed -n 5p $azpbsbuild_script)
+  pack_release=$(sed -n 6p $azpbsbuild_script)
+  pack_version=$(sed -n 7p $azpbsbuild_script)
+  pack_maintainer=$(sed -n 8p $azpbsbuild_script)
+  pack_url=$(sed -n 9p $azpbsbuild_script)
+  pack_arch=$(sed -n 10p $azpbsbuild_script)
+  pack_source=$(sed -n 11p $azpbsbuild_script)
+  pack_packname=$(sed -n 12p $azpbsbuild_script)
+  pack_packtype=$(sed -n 13p $azpbsbuild_script)
+  pack_description=$(sed -n 14p $azpbsbuild_script)
   [ ${pack_name:4} ! "name" ] && echo "$error" "'$azpbsbuild_script'" $"'name' is not written in the file" && exit
   [ ${pack_release:7} ! "release" ] && echo "$error" "'$azpbsbuild_script'" $"'release' is not written in the file" && exit
   [ ${pack_version:7} ! "version" ] && echo "$error" "'$azpbsbuild_script'" $"'version' is not written in the file" && exit
