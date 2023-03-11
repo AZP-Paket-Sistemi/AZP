@@ -96,17 +96,17 @@ azps_build(){
   pack_packname=$(sed -n 13p azpbuild)
   pack_packtype=$(sed -n 14p azpbuild)
   pack_description=$(sed -n 15p azpbuild)
-  [ ${pack_name:4} ! "name" ] && echo "$error" $"'name' is not written in the 'azpbuild' file" && exit
-  [ ${pack_release:7} ! "release" ] && echo "$error" $"'release' is not written in the 'azpbuild' file" && exit
-  [ ${pack_version:7} ! "version" ] && echo "$error" $"'version' is not written in the 'azpbuild' file" && exit
-  [ ${pack_maintainer:10} ! "maintainer" ] && echo "$error" $"'maintainer' is not written in the 'azpbuild' file" && exit
-  [ ${pack_url:3} ! "url" ] && echo "$error" $"'url' is not written in the 'azpbuild' file" && exit
-  [ ${pack_arch:4} ! "arch" ] && echo "$error" $"'arch' is not written in the 'azpbuild' file" && exit
-  [ ${pack_source:6} ! "source" ] && echo "$error" $"'source' is not written in the 'azpbuild' file" && exit
-  [ ${pack_depends:7} ! "depends" ] && echo "$error" $"'depends' is not written in the 'azpbuild' file" && exit
-  [ ${pack_packname:7} ! "package" ] && echo "$error" $"'package' is not written in the 'azpbuild' file" && exit
-  [ ${pack_packtype:8} ! "packtype" ] && echo "$error" $"'packtype' is not written in the 'azpbuild' file" && exit
-  [ ${pack_description:11} ! "description" ] && echo "$error" $"'description' is not written in the 'azpbuild' file" && exit
+  [ ${pack_name:0:4} != "name" ] && echo "$error" $"'name' is not written in the 'azpbuild' file" && exit
+  [ ${pack_release:0:7} != "release" ] && echo "$error" $"'release' is not written in the 'azpbuild' file" && exit
+  [ ${pack_version:0:7} != "version" ] && echo "$error" $"'version' is not written in the 'azpbuild' file" && exit
+  [ ${pack_maintainer:0:10} != "maintainer" ] && echo "$error" $"'maintainer' is not written in the 'azpbuild' file" && exit
+  [ ${pack_url:0:3} != "url" ] && echo "$error" $"'url' is not written in the 'azpbuild' file" && exit
+  [ ${pack_arch:0:4} != "arch" ] && echo "$error" $"'arch' is not written in the 'azpbuild' file" && exit
+  [ ${pack_source:0:6} != "source" ] && echo "$error" $"'source' is not written in the 'azpbuild' file" && exit
+  [ ${pack_depends:0:7} != "depends" ] && echo "$error" $"'depends' is not written in the 'azpbuild' file" && exit
+  [ ${pack_packname:0:7} != "package" ] && echo "$error" $"'package' is not written in the 'azpbuild' file" && exit
+  [ ${pack_packtype:0:8} != "packtype" ] && echo "$error" $"'packtype' is not written in the 'azpbuild' file" && exit
+  [ ${pack_description:0:11} != "description" ] && echo "$error" $"'description' is not written in the 'azpbuild' file" && exit
   # azpbuild çalışdırma
   source azpbuild &>/dev/null
   opnperr $name
@@ -347,17 +347,17 @@ azps_cazp(){
   pack_packname=$(sed -n 13p azpbuild)
   pack_packtype=$(sed -n 14p azpbuild)
   pack_description=$(sed -n 15p azpbuild)
-  [ ${pack_name:4} ! "name" ] && echo "$error" $"'name' is not written in the 'azpbuild' file" && exit
-  [ ${pack_release:7} ! "release" ] && echo "$error" $"'release' is not written in the 'azpbuild' file" && exit
-  [ ${pack_version:7} ! "version" ] && echo "$error" $"'version' is not written in the 'azpbuild' file" && exit
-  [ ${pack_maintainer:10} ! "maintainer" ] && echo "$error" $"'maintainer' is not written in the 'azpbuild' file" && exit
-  [ ${pack_url:3} ! "url" ] && echo "$error" $"'url' is not written in the 'azpbuild' file" && exit
-  [ ${pack_arch:4} ! "arch" ] && echo "$error" $"'arch' is not written in the 'azpbuild' file" && exit
-  [ ${pack_source:6} ! "source" ] && echo "$error" $"'source' is not written in the 'azpbuild' file" && exit
-  [ ${pack_depends:7} ! "depends" ] && echo "$error" $"'depends' is not written in the 'azpbuild' file" && exit
-  [ ${pack_packname:7} ! "package" ] && echo "$error" $"'package' is not written in the 'azpbuild' file" && exit
-  [ ${pack_packtype:8} ! "packtype" ] && echo "$error" $"'packtype' is not written in the 'azpbuild' file" && exit
-  [ ${pack_description:11} ! "description" ] && echo "$error" $"'description' is not written in the 'azpbuild' file" && exit
+  [ ${pack_name:0:4} != "name" ] && echo "$error" $"'name' is not written in the 'azpbuild' file" && exit
+  [ ${pack_release:0:7} != "release" ] && echo "$error" $"'release' is not written in the 'azpbuild' file" && exit
+  [ ${pack_version:0:7} != "version" ] && echo "$error" $"'version' is not written in the 'azpbuild' file" && exit
+  [ ${pack_maintainer:0:10} != "maintainer" ] && echo "$error" $"'maintainer' is not written in the 'azpbuild' file" && exit
+  [ ${pack_url:0:3} != "url" ] && echo "$error" $"'url' is not written in the 'azpbuild' file" && exit
+  [ ${pack_arch:0:4} != "arch" ] && echo "$error" $"'arch' is not written in the 'azpbuild' file" && exit
+  [ ${pack_source:0:6} != "source" ] && echo "$error" $"'source' is not written in the 'azpbuild' file" && exit
+  [ ${pack_depends:0:7} != "depends" ] && echo "$error" $"'depends' is not written in the 'azpbuild' file" && exit
+  [ ${pack_packname:0:7} != "package" ] && echo "$error" $"'package' is not written in the 'azpbuild' file" && exit
+  [ ${pack_packtype:0:8} != "packtype" ] && echo "$error" $"'packtype' is not written in the 'azpbuild' file" && exit
+  [ ${pack_description:0:11} != "description" ] && echo "$error" $"'description' is not written in the 'azpbuild' file" && exit
   # azpbuild çalışdırma
   source azpbuild
   if [ ! -f $package ]
@@ -509,16 +509,16 @@ azpbs_build(){
   pack_packname=$(sed -n 12p $azpbsbuild_script)
   pack_packtype=$(sed -n 13p $azpbsbuild_script)
   pack_description=$(sed -n 14p $azpbsbuild_script)
-  [ ${pack_name:4} ! "name" ] && echo "$error" "'$azpbsbuild_script'" $"'name' is not written in the file" && exit
-  [ ${pack_release:7} ! "release" ] && echo "$error" "'$azpbsbuild_script'" $"'release' is not written in the file" && exit
-  [ ${pack_version:7} ! "version" ] && echo "$error" "'$azpbsbuild_script'" $"'version' is not written in the file" && exit
-  [ ${pack_maintainer:10} ! "maintainer" ] && echo "$error" "'$azpbsbuild_script'" $"'maintainer' is not written in the file" && exit
-  [ ${pack_url:3} ! "url" ] && echo "$error" "'$azpbsbuild_script'" $"'url' is not written in the file" && exit
-  [ ${pack_arch:4} ! "arch" ] && echo "$error" "'$azpbsbuild_script'" $"'arch' is not written in the file" && exit
-  [ ${pack_source:6} ! "source" ] && echo "$error" "'$azpbsbuild_script'" $"'source' is not written in the file" && exit
-  [ ${pack_packname:7} ! "package" ] && echo "$error" "'$azpbsbuild_script'" $"'package' is not written in the file" && exit
-  [ ${pack_packtype:8} ! "packtype" ] && echo "$error" "'$azpbsbuild_script'" $"'packtype' is not written in the file" && exit
-  [ ${pack_description:11} ! "description" ] && echo "$error" "'$azpbsbuild_script'" $"'description' is not written in the file" && exit
+  [ ${pack_name:0:4} != "name" ] && echo "$error" "'$azpbsbuild_script'" $"'name' is not written in the file" && exit
+  [ ${pack_release:0:7} != "release" ] && echo "$error" "'$azpbsbuild_script'" $"'release' is not written in the file" && exit
+  [ ${pack_version:0:7} != "version" ] && echo "$error" "'$azpbsbuild_script'" $"'version' is not written in the file" && exit
+  [ ${pack_maintainer:0:10} != "maintainer" ] && echo "$error" "'$azpbsbuild_script'" $"'maintainer' is not written in the file" && exit
+  [ ${pack_url:0:3} != "url" ] && echo "$error" "'$azpbsbuild_script'" $"'url' is not written in the file" && exit
+  [ ${pack_arch:0:4} != "arch" ] && echo "$error" "'$azpbsbuild_script'" $"'arch' is not written in the file" && exit
+  [ ${pack_source:0:6} != "source" ] && echo "$error" "'$azpbsbuild_script'" $"'source' is not written in the file" && exit
+  [ ${pack_packname:0:7} != "package" ] && echo "$error" "'$azpbsbuild_script'" $"'package' is not written in the file" && exit
+  [ ${pack_packtype:0:8} != "packtype" ] && echo "$error" "'$azpbsbuild_script'" $"'packtype' is not written in the file" && exit
+  [ ${pack_description:0:11} != "description" ] && echo "$error" "'$azpbsbuild_script'" $"'description' is not written in the file" && exit
   source $azpbsbuild_script &>/dev/null
   # Paketi yükləmə
   echo "$info" $"Source web:" "$url"
