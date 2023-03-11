@@ -587,7 +587,7 @@ azpbs_build(){
   echo "name: $name" >> /tmp/azpnp_cache/info
   if [ ${#description} -lt 120 ]
   then
-    echo "description:$description" >> /tmp/azpnp_cache/info
+    echo "description: $description" >> /tmp/azpnp_cache/info
   else
     echo "description: *" >> /tmp/azpnp_cache/info
     longdescription="description: $description"
