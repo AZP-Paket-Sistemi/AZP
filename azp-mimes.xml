@@ -24,4 +24,12 @@
     <glob-deleteall/>
     <glob pattern="*.azpsh"/>
   </mime-type>
+  <mime-type type="application/x-azp-text">
+    <comment>AZP web package file</comment>
+    <comment xml:lang="az">AZP veb paket faylı</comment>
+    <comment xml:lang="tr">AZP web paket dosyası</comment>
+    <icon name="application/x-azp-text"/>
+    <glob-deleteall/>
+    <glob pattern="*.azpweb"/>
+  </mime-type>
 </mime-info>

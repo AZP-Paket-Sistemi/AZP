@@ -1,7 +1,7 @@
 # AZP
 
 AZP, Azərbaycanın yerli Linux paket meneceridir.
-Versiya: 4.0
+Versiya: 4.5
 
 Çalışdırmaq üçün:
 ```bash

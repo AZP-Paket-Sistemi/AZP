@@ -1,11 +1,10 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 4.0
+### AZP Paket Sistemi 4.5
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
 # © 2021-2023 AZP
-# © 2019-2023 PacPERRO
 
 # Rənglər
 error=$(echo -e "\033[1;31m E: \033[:0m")
@@ -17,7 +16,7 @@ info=$(echo -e "\033[1;36m I: \033[:0m")
 TEXTDOMAINDIR=/usr/share/locale
 TEXTDOMAIN=azp-remove
 
-# Root kontrol
+# Root yoxlama
 if [ $UID -ne 0 ]
 then
   echo "$info" $"Command: sudo ./azp-remove.sh"

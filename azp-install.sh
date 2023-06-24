@@ -1,11 +1,10 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 4.0
+### AZP Paket Sistemi 4.5
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
 # © 2021-2023 AZP
-# © 2019-2023 PacPERRO
 
 # Rənglər
 error=$(echo -e "\033[1;31m E: \033[:0m")
@@ -13,12 +12,13 @@ process=$(echo -e "\033[1;34m P: \033[:0m")
 finished=$(echo -e "\033[1;32m F: \033[:0m")
 info=$(echo -e "\033[1;36m I: \033[:0m")
 
+
 TEXTDOMAINDIR=/usr/share/locale
 TEXTDOMAIN=azp-install
 cp -r locale/az/LC_MESSAGES/azp-*.mo /usr/share/locale/az/LC_MESSAGES
 cp -r locale/tr/LC_MESSAGES/azp-*.mo /usr/share/locale/tr/LC_MESSAGES
 
-# Root kontrol
+# Root yoxlama
 if [ $UID -ne 0 ]
 then
   echo "$info" $"Command: sudo ./azp-install.sh"
@@ -45,7 +45,7 @@ echo -e """\033[1;34m
      -----------------------------
 
                 
-           <<  || 4.0 || >>
+           <<  || 4.5 || >>
                 -------
 """
 sleep 0.5
@@ -64,6 +64,7 @@ xdg-mime install azp-mimes.xml
 xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-azp
 xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-src-azp
 xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-azp-script
+xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-azp-text
 azp -add-architecture -auto
 echo "$finished" $"AZP install finished"
 rm -r /usr/share/locale/*/LC_MESSAGES/azp-install.mo
