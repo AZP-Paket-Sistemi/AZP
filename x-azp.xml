@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-azp">
+    <comment>AZP package</comment>
+    <comment xml:lang="az">AZP paketi</comment>
+    <comment xml:lang="tr">AZP paketi</comment>
+    <icon name="application/x-azp"/>
+    <glob-deleteall/>
+    <glob pattern="*.azp"/>
+  </mime-type>
+  <mime-type type="application/x-src-azp">
+    <comment>AZP source package</comment>
+    <comment xml:lang="az">AZP mənbə paketi</comment>
+    <comment xml:lang="tr">AZP kaynak paketi</comment>
+    <icon name="application/x-src-azp"/>
+    <glob-deleteall/>
+    <glob pattern="*.azpsrc"/>
+  </mime-type>
+  <mime-type type="application/x-azp-script">
+    <comment>AZP source script</comment>
+    <comment xml:lang="az">AZP mənbə skripti</comment>
+    <comment xml:lang="tr">AZP kaynak betiği</comment>
+    <icon name="application/x-azp-script"/>
+    <glob-deleteall/>
+    <glob pattern="*.azpsh"/>
+  </mime-type>
+  <mime-type type="application/x-azp-text">
+    <comment>AZP web package file</comment>
+    <comment xml:lang="az">AZP veb paket faylı</comment>
+    <comment xml:lang="tr">AZP web paket dosyası</comment>
+    <icon name="application/x-azp-text"/>
+    <glob-deleteall/>
+    <glob pattern="*.azpweb"/>
+  </mime-type>
+</mime-info>

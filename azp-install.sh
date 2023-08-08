@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 4.5
+### AZP Paket Sistemi 5.0
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
@@ -45,7 +45,7 @@ echo -e """\033[1;34m
      -----------------------------
 
                 
-           <<  || 4.5 || >>
+           <<  || 5.0 || >>
                 -------
 """
 sleep 0.5
@@ -60,11 +60,12 @@ do
     exit 1
   fi
 done
-xdg-mime install azp-mimes.xml
-xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-azp
-xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-src-azp
-xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-azp-script
-xdg-icon-resource install --context mimetypes --size 64 azp.png application-x-azp-text
+xdg-mime install x-azp.xml
+xdg-icon-resource install --context mimetypes --size 64 azp.png application/x-azp
+xdg-icon-resource install --context mimetypes --size 64 azp.png application/x-src-azp
+xdg-icon-resource install --context mimetypes --size 64 azp.png application/x-azp-script
+xdg-icon-resource install --context mimetypes --size 64 azp.png application/x-azp-text
+update-icon-caches /usr/share/icons/*
 azp -add-architecture -auto
 echo "$finished" $"AZP install finished"
 rm -r /usr/share/locale/*/LC_MESSAGES/azp-install.mo

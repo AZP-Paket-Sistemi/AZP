@@ -36,4 +36,4 @@ sudo azp
 | `22) azp -depoinfo`                | AZP depo məlumatlarını görmək                                     |
 | `23) azp -add-architecture [arch]` | Arxitektura əlavə etmə                                            |
 | `24) azp -add-architecture -auto`  | Komputer arxitekturasını oxuma və qeyd etmə                       |
-| `25) azp -archrd`                  | Oxunmuş arxitekturanı qeyd eləmək                                 |
+| `25) azp -archrd`                  | Qeyd olunmuş arxitekturanı oxuma                                 |

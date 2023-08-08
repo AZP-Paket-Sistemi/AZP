@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 4.5
+### AZP Paket Sistemi 5.0
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
@@ -44,4 +44,5 @@ done
 rm -r /etc/azp
 rm -r /var/cache/azp-archives
 rm -r /var/cache/azp/azp-depo /var/cache/azp/azp-architecture
+xdg-mime uninstall /usr/share/mime/packages/x-azp.xml
 echo "$finished" $"AZP remove finished"
