@@ -1,10 +1,10 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 5.0
+### AZP Paket Sistemi 5.5
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
-# © 2021-2023 AZP
+# © 2021-2024 AZP
 
 # Rənglər
 error=$(echo -e "\033[1;31m E: \033[:0m")
@@ -43,6 +43,6 @@ do
 done
 rm -r /etc/azp
 rm -r /var/cache/azp-archives
-rm -r /var/cache/azp/azp-depo /var/cache/azp/azp-architecture
+rm -r /var/cache/azp/azp-depo /var/cache/azp/architecture
 xdg-mime uninstall /usr/share/mime/packages/x-azp.xml
 echo "$finished" $"AZP remove finished"

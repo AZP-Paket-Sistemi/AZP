@@ -1,10 +1,10 @@
 #!/bin/bash
 
-### AZP Paket Sistemi 5.0
+### AZP Paket Sistemi 5.5
 # AZP Offical Site: https://azp-paket-sistemi.github.io
 # AZP Offical Depo: https://azp-paket-sistemi.github.io/azp-depo
 
-# © 2021-2023 AZP
+# © 2021-2024 AZP
 
 # Rənglər
 error=$(echo -e "\033[1;31m E: \033[:0m")
@@ -45,7 +45,7 @@ echo -e """\033[1;34m
      -----------------------------
 
                 
-           <<  || 5.0 || >>
+           <<  || 5.5 || >>
                 -------
 """
 sleep 0.5
